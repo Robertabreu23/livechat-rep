@@ -1,13 +1,595 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Layout principal ── */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 220px;
+  background: #16213e;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  border-right: 1px solid #0f3460;
+  flex-shrink: 0;
+}
+
+.sidebar-section {
+  margin-bottom: 24px;
+  padding: 0 12px;
+}
+
+.sidebar-section h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #7a7a9a;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.sidebar-section button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #b0b0c8;
+  text-align: left;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 2px;
+  transition: background 0.15s;
+}
+
+.sidebar-section button:hover {
+  background: #0f3460;
+  color: #fff;
+}
+
+.sidebar-section button.active {
+  background: #0f3460;
+  color: #fff;
+  font-weight: 600;
+}
+
+.unread-badge {
+  margin-left: auto;
+  background: rgba(126, 184, 247, 0.25);
+  border: 1px solid rgba(126, 184, 247, 0.5);
+  color: #7eb8f7;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.user-item {
+  padding: 5px 8px;
+  font-size: 13px;
+  color: #b0b0c8;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-item::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+  flex-shrink: 0;
+}
+
+/* ── Área de chat ── */
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── ChatBox ── */
+.chatbox {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 20px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chatbox.empty {
+  justify-content: center;
+  align-items: center;
+  color: #7a7a9a;
+  font-size: 15px;
+}
+
+.chatbox::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatbox::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatbox::-webkit-scrollbar-thumb {
+  background: #0f3460;
+  border-radius: 3px;
+}
+
+.message {
+  background: #16213e;
+  border-radius: 10px;
+  padding: 10px 14px;
+  max-width: 75%;
+  align-self: flex-start;
+  border: 1px solid #0f3460;
+}
+
+.message-user {
+  font-weight: 700;
+  font-size: 13px;
+  color: #7eb8f7;
+  margin-right: 8px;
+}
+
+.message-time {
+  font-size: 11px;
+  color: #7a7a9a;
+}
+
+.message-text {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+/* ── Typing indicator ── */
+.typing-indicator {
+  padding: 4px 20px;
+  font-size: 12px;
+  color: #7a7a9a;
+  font-style: italic;
+  min-height: 22px;
+}
+
+/* ── MessageInput ── */
+.message-input {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  background: #16213e;
+  border-top: 1px solid #0f3460;
+}
+
+.message-input input {
+  flex: 1;
+  background: #0f3460;
+  border: 1px solid #1a4a8a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #e0e0e0;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.message-input input:focus {
+  border-color: #7eb8f7;
+}
+
+.message-input input::placeholder {
+  color: #7a7a9a;
+}
+
+.message-input input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.message-input button {
+  background: #7eb8f7;
+  color: #0f1b2d;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.message-input button:hover:not(:disabled) {
+  background: #5a9fd4;
+}
+
+.message-input button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Splash Screen ── */
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 1; }
+  40%            { transform: translateY(-8px); opacity: 0.6; }
+}
+
+@keyframes splashBarFill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@keyframes splashFadeIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 48px;
+  background: #1a1a2e;
+  transition: opacity 0.6s ease;
+}
+
+.splash-fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-logo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  animation: splashFadeIn 0.7s ease both;
+}
+
+.splash-bubble {
+  width: 110px;
+  height: 100px;
+  filter: drop-shadow(0 0 18px rgba(0, 198, 255, 0.45));
+}
+
+.dot {
+  animation: dotBounce 1.2s infinite ease-in-out;
+}
+.dot1 { animation-delay: 0s; }
+.dot2 { animation-delay: 0.2s; }
+.dot3 { animation-delay: 0.4s; }
+
+.splash-title {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.splash-live {
+  color: #1a6ef5;
+}
+
+.splash-chat {
+  color: #00c6ff;
+}
+
+.splash-bar {
+  width: 200px;
+  height: 3px;
+  background: #16213e;
+  border-radius: 99px;
+  overflow: hidden;
+  animation: splashFadeIn 0.7s ease 0.3s both;
+}
+
+.splash-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1a6ef5, #00c6ff);
+  border-radius: 99px;
+  animation: splashBarFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+/* ── Login ── */
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 24px;
+}
+
+.login h2 {
+  font-size: 24px;
+  color: #7eb8f7;
+}
+
+.login form {
+  display: flex;
+  gap: 8px;
+}
+
+.login input {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #e0e0e0;
+  font-size: 14px;
+  outline: none;
+  width: 240px;
+  transition: border-color 0.15s;
+}
+
+.login input:focus {
+  border-color: #7eb8f7;
+}
+
+.login button {
+  background: #7eb8f7;
+  color: #0f1b2d;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.login button:hover {
+  background: #5a9fd4;
+}
+
+/* ── Lobby ── */
+.lobby {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 32px;
+  padding: 24px;
+}
+
+.lobby-header {
+  text-align: center;
+}
+
+.lobby-header h2 {
+  font-size: 26px;
+  color: #e0e0e0;
+  margin-bottom: 6px;
+}
+
+.lobby-username {
+  color: #7eb8f7;
+}
+
+.lobby-subtitle {
+  font-size: 15px;
+  color: #7a7a9a;
+}
+
+.lobby-options {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.lobby-card {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 14px;
+  padding: 28px 32px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lobby-card h3 {
+  font-size: 16px;
+  color: #7eb8f7;
+  font-weight: 700;
+}
+
+.lobby-card p {
+  font-size: 13px;
+  color: #7a7a9a;
+  line-height: 1.5;
+}
+
+.lobby-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  flex-shrink: 0;
+  color: #7a7a9a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lobby-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+}
+
+.lobby-btn.primary {
+  background: #7eb8f7;
+  color: #0f1b2d;
+}
+
+.lobby-btn.primary:hover {
+  background: #5a9fd4;
+}
+
+.lobby-btn.secondary {
+  background: #0f3460;
+  color: #e0e0e0;
+  border: 1px solid #1a4a8a;
+}
+
+.lobby-btn.secondary:hover {
+  background: #1a4a8a;
+}
+
+.lobby-created {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lobby-id-label {
+  font-size: 12px;
+  color: #7a7a9a;
+  margin: 0;
+}
+
+.lobby-id-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f3460;
+  border: 1px solid #1a4a8a;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.lobby-id-text {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #7eb8f7;
+  font-family: monospace;
+}
+
+.lobby-copy-btn {
+  background: transparent;
+  border: 1px solid #1a4a8a;
+  color: #7a7a9a;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.lobby-copy-btn:hover {
+  background: #1a4a8a;
+  color: #e0e0e0;
+}
+
+.lobby-join-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lobby-join-input {
+  background: #0f3460;
+  border: 1px solid #1a4a8a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #e0e0e0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  font-family: monospace;
+  outline: none;
+  text-align: center;
+  text-transform: uppercase;
+  transition: border-color 0.15s;
+}
+
+.lobby-join-input:focus {
+  border-color: #7eb8f7;
+}
+
+.lobby-join-input::placeholder {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #7a7a9a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  text-transform: none;
+}
+
+/* ── Sidebar room ID display ── */
+.sidebar-room-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f3460;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+}
+
+.sidebar-room-code {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #7eb8f7;
+  font-family: monospace;
+}
+
+.sidebar-copy-btn {
+  background: transparent;
+  border: none;
+  color: #7a7a9a;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.sidebar-copy-btn:hover {
+  color: #e0e0e0;
+}
+
+.sidebar-room-hint {
+  font-size: 11px;
+  color: #7a7a9a;
+  line-height: 1.4;
+  padding: 0 4px;
 }
