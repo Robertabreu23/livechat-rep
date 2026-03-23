@@ -42,8 +42,20 @@ function App() {
   }, [username, currentRoom, addMessage, setMessages, incrementUnread, setUsers, setTypingUser]);
 
   if (showSplash) return <SplashScreen onDone={handleSplashDone} />;
-  if (!username) return <Login />;
-  if (!currentRoom) return <Lobby />;
+
+  if (!username) return (
+    <div className="app-wrapper">
+      <Navbar />
+      <Login />
+    </div>
+  );
+
+  if (!currentRoom) return (
+    <div className="app-wrapper">
+      <Navbar />
+      <Lobby />
+    </div>
+  );
 
   return (
     <div className="app-wrapper">
