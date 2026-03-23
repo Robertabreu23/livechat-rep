@@ -12,10 +12,50 @@ body {
   overflow: hidden;
 }
 
+/* ── Navbar ── */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.navbar {
+  height: 52px;
+  background: #0f0f1a;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.25);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 12px rgba(109, 40, 217, 0.15);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.navbar-live {
+  color: #8b5cf6;
+}
+
+.navbar-chat {
+  color: #a78bfa;
+}
+
 /* ── Layout principal ── */
 .app {
   display: flex;
-  height: 100vh;
+  flex: 1;
+  overflow: hidden;
 }
 
 /* ── Sidebar ── */

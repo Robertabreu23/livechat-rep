@@ -4,6 +4,7 @@ import useChatStore from "./store/useChatStore";
 import SplashScreen from "./components/SplashScreen";
 import Login from "./components/Login";
 import Lobby from "./components/Lobby";
+import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import ChatBox from "./components/ChatBox";
 import MessageInput from "./components/MessageInput";
@@ -45,12 +46,15 @@ function App() {
   if (!currentRoom) return <Lobby />;
 
   return (
-    <div className="app">
-      <Sidebar />
-      <div className="chat-area">
-        <ChatBox />
-        <TypingIndicator />
-        <MessageInput />
+    <div className="app-wrapper">
+      <Navbar />
+      <div className="app">
+        <Sidebar />
+        <div className="chat-area">
+          <ChatBox />
+          <TypingIndicator />
+          <MessageInput />
+        </div>
       </div>
     </div>
   );
